@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CAACC40B25CB032100C4CB70 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAACC40A25CB032100C4CB70 /* main.swift */; };
+		CAACC41825CB48EE00C4CB70 /* data.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = CAACC41425CB46D700C4CB70 /* data.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -17,6 +18,7 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
+				CAACC41825CB48EE00C4CB70 /* data.txt in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -25,6 +27,9 @@
 /* Begin PBXFileReference section */
 		CAACC40725CB032100C4CB70 /* GoogleHashCode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GoogleHashCode; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAACC40A25CB032100C4CB70 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CAACC41225CB447200C4CB70 /* a_example.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = a_example.txt; sourceTree = "<group>"; };
+		CAACC41425CB46D700C4CB70 /* data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
+		CAACC41625CB481900C4CB70 /* example.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = example.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +46,7 @@
 		CAACC3FE25CB032100C4CB70 = {
 			isa = PBXGroup;
 			children = (
+				CAACC41625CB481900C4CB70 /* example.txt */,
 				CAACC40925CB032100C4CB70 /* GoogleHashCode */,
 				CAACC40825CB032100C4CB70 /* Products */,
 			);
@@ -57,7 +63,9 @@
 		CAACC40925CB032100C4CB70 /* GoogleHashCode */ = {
 			isa = PBXGroup;
 			children = (
+				CAACC41225CB447200C4CB70 /* a_example.txt */,
 				CAACC40A25CB032100C4CB70 /* main.swift */,
+				CAACC41425CB46D700C4CB70 /* data.txt */,
 			);
 			path = GoogleHashCode;
 			sourceTree = "<group>";
