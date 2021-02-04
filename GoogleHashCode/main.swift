@@ -8,8 +8,6 @@
 import Foundation
 import Cocoa
 
-let arr = [1,2,3]
-
 struct GlobalData {
     let totalDays: Int
     let libraries: Int
@@ -81,7 +79,8 @@ loadData()
 let libs = libraries.sorted { $0.signupLength < $1.signupLength }
 var bookSet = Set<Int>()
 var libBlackList = Set<Int>()
-var arrTotal = [[(Library, Int, [Int])]]()
+//var arrTotal = [[(Library, Int, [Int])]]()
+var arrTotal = Array<[(Library, Int, [Int])]>(repeating: [], count: libs.count)
 for i in 0..<libs.count {
     var offset = libraries[i].signupLength
     libBlackList.removeAll()
