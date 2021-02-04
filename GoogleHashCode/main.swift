@@ -36,7 +36,7 @@ var valueDict = [Int: Int]()
 
 func loadData() {
    
-    if let filepath = Bundle.main.path(forResource: "data", ofType: "txt") {
+    if let filepath = Bundle.main.path(forResource: "b_read_on", ofType: "txt") {
         do {
             let contents = try String(contentsOfFile: filepath)
             let datas = contents.split(separator: "\n")
@@ -79,7 +79,6 @@ loadData()
 let libs = libraries.sorted { $0.signupLength < $1.signupLength }
 var bookSet = Set<Int>()
 var libBlackList = Set<Int>()
-//var arrTotal = [[(Library, Int, [Int])]]()
 var arrTotal = Array<[(Library, Int, [Int])]>(repeating: [], count: libs.count)
 for i in 0..<libs.count {
     var offset = libraries[i].signupLength
@@ -107,6 +106,22 @@ let sortedArr = arrTotal.sorted { elem1, elem2 in
     }
     return tot1 > tot2
 }
+//
+//let arr1 = arrTotal[0]
+//let arr2 = arrTotal[1]
+//
+//var tot1 = 0
+//arr1.forEach {
+//    tot1 += $0.1
+//}
+//var tot2 = 0
+//arr2.forEach {
+//    tot2 += $0.1
+//}
+//
+//
+//print("tot1: ", tot1)
+//print("tot2: ", tot2)
 
 let result = sortedArr[0]
 result.forEach {
@@ -115,13 +130,17 @@ result.forEach {
     arr.forEach {
         print($0, terminator: " ")
     }
+    print("")
 }
-
+//
+//arrTotal.forEach {
+//    print($0)
+//}
 
 func calculateOutput(library: Library, offset: Int) -> (Double, Int, [Int]) {
     let activeDays = globalData!.totalDays - offset - library.signupLength
     let processingPower = activeDays * library.maxBookProcess
-    let count = min(processingPower, library.books.count)
+    let count = max(min(processingPower, library.books.count), 0)
     var result = 0
     var bookSequence = [Int]()
     for i in 0..<count {
