@@ -36,7 +36,7 @@ var valueDict = [Int: Int]()
 
 func loadData() {
    
-    if let filepath = Bundle.main.path(forResource: "b_read_on", ofType: "txt") {
+    if let filepath = Bundle.main.path(forResource: "c_incunabula", ofType: "txt") {
         do {
             let contents = try String(contentsOfFile: filepath)
             let datas = contents.split(separator: "\n")
@@ -74,6 +74,8 @@ func loadData() {
 }
 
 loadData()
+print("Data loaded ...")
+print("Total libraries: ", libraries.count)
 
 // sort the libraries array
 let libs = libraries.sorted { $0.signupLength < $1.signupLength }
@@ -92,6 +94,7 @@ for i in 0..<libs.count {
         libBlackList.insert(maxLib.0.id)
         arrTotal[i].append(maxLib)
     }
+    print("Library \(i) completed ...")
 }
 
 // Calculate the best sequence
