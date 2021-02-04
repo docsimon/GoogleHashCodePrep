@@ -75,71 +75,90 @@ func loadData() {
    
 }
 
-//func computeCombo(arr: [Library], tmp: [Library]) {
-//
-//    // Add here logic to calculate the max output of libraries
-//    var days = 0
-//    var bookSet = [Book]() // I want to avoid duplicates
-//    for i in 0..<tmp.count {
-//        let lib = tmp[i]
-//        days += lib.signupLength
-//        if days <= globalData!.totalDays {
-//            for b in lib.books {
-//                if !bookSet.contains(b) {
-//
-//                }
-//            }
-//
-//        } else {
-//            break
-//        }
-//    }
-//
-//    for i in 0..<arr.count {
-//        computeCombo(arr: Array(arr[(i+1)...]), tmp: tmp + [arr[i]])
-//    }
-//
-//}
-
-//computeCombo(arr: arr, tmp: [])
 loadData()
 
 // sort the libraries array
-let libs = libraries.sorted { $0.signupLength > $1.signupLength }
+let libs = libraries.sorted { $0.signupLength < $1.signupLength }
 var bookSet = Set<Int>()
+var libBlackList = Set<Int>()
+var arrTotal = [[(Library, Int, [Int])]]()
 for i in 0..<libs.count {
-    //let powerOutput =
-    for j in 0..<libs.count {
-        if i == j { continue }
-        
-        
+    var offset = libraries[i].signupLength
+    libBlackList.removeAll()
+    let firstLibTuple = spotCalc(lib: libraries[i])
+    arrTotal[i].append(firstLibTuple)
+    libBlackList.insert(libraries[i].id)
+    while offset < globalData!.totalDays {
+        let maxLib = findMaxAverageOutput(libs: libs, exclusions: libBlackList, offset: offset)
+        offset += maxLib.0.signupLength
+        libBlackList.insert(maxLib.0.id)
+        arrTotal[i].append(maxLib)
     }
 }
 
-func calculateOutput(library: Library) -> Int {
-    let activeDays = globalData!.totalDays - library.signupLength
+// Calculate the best sequence
+let sortedArr = arrTotal.sorted { elem1, elem2 in
+    var tot1 = 0
+    var tot2 = 0
+    elem1.forEach {
+        tot1 += $0.1
+    }
+    elem2.forEach {
+        tot2 += $0.1
+    }
+    return tot1 > tot2
+}
+
+let result = sortedArr[0]
+result.forEach {
+    print($0.0.id, " ", $0.2.count)
+    let arr = $0.2
+    arr.forEach {
+        print($0, terminator: " ")
+    }
+}
+
+
+func calculateOutput(library: Library, offset: Int) -> (Double, Int, [Int]) {
+    let activeDays = globalData!.totalDays - offset - library.signupLength
     let processingPower = activeDays * library.maxBookProcess
-//    if processingPower > library.books.count {
-//        return library.books.reduce(0, { (result, book) in
-//            var res = 0
-//            if !bookSet.contains(book.id) {
-//                let res = result + book.value
-//                bookSet.insert(book.id)
-//                return res
-//            }
-//            return result
-//        })
-//    } else {
-//        var result = 0
-//        library.books.
-//    }
     let count = min(processingPower, library.books.count)
     var result = 0
+    var bookSequence = [Int]()
     for i in 0..<count {
         if !bookSet.contains(library.books[i].id) {
             result += library.books[i].value
             bookSet.insert(library.books[i].id)
+            bookSequence.append(library.books[i].id)
         }
     }
-    return result  
+    return (Double(result)/Double(activeDays), result, bookSequence)
+}
+
+func findMaxAverageOutput(libs: [Library], exclusions: Set<Int>, offset: Int) -> (Library, Int, [Int]) {
+    var maxOutput: (Double, Int, Library, [Int]) = (0, 0, libs[0], [])
+    for i in 0..<libs.count {
+        if !exclusions.contains(libs[i].id) {
+            let output = calculateOutput(library: libs[i], offset: offset)
+            if output.0 >= maxOutput.0 {
+                maxOutput.0 = output.0
+                maxOutput.2 = libs[i] // Library
+                maxOutput.1 = output.1 // Tot value of books
+                maxOutput.3 = output.2 // Array of books id
+                
+            }
+        }
+    }
+    
+    return (maxOutput.2, maxOutput.1, maxOutput.3)
+}
+
+func spotCalc(lib: Library) -> (Library, Int, [Int]) {
+    var result = 0
+    var arr = [Int]()
+    for i in 0..<lib.books.count {
+        result += lib.books[i].value
+        arr.append(lib.books[i].id)
+    }
+    return (lib, result, arr)
 }
