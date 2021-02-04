@@ -24,7 +24,7 @@ struct Book {
 
 struct Library {
     let id: Int
-    let subscriptionLength: Int
+    let signupLength: Int
     let books: [Book]
     let maxBookProcess: Int
     func calculateOutput() {
@@ -60,7 +60,7 @@ func loadData() {
                     bookIdValue.append(Book(id: books[j], value: valueDict[books[j]]!))
                 }
                 let bookListValue = bookIdValue.sorted { $0.value > $1.value }
-                let newLib = Library(id: ids, subscriptionLength: libData[1], books: bookListValue, maxBookProcess: libData[2])
+                let newLib = Library(id: ids, signupLength: libData[1], books: bookListValue, maxBookProcess: libData[2])
                 libraries.append(newLib)
                 i += 2
                 ids += 1
@@ -75,26 +75,71 @@ func loadData() {
    
 }
 
-
-
-func computeCombo(arr: [Int], tmp: [Int]) {
-    
-        print(tmp)
-    for i in 0..<arr.count {
-        computeCombo(arr: Array(arr[(i+1)...]), tmp: tmp + [arr[i]])
-    }
-    
-}
+//func computeCombo(arr: [Library], tmp: [Library]) {
+//
+//    // Add here logic to calculate the max output of libraries
+//    var days = 0
+//    var bookSet = [Book]() // I want to avoid duplicates
+//    for i in 0..<tmp.count {
+//        let lib = tmp[i]
+//        days += lib.signupLength
+//        if days <= globalData!.totalDays {
+//            for b in lib.books {
+//                if !bookSet.contains(b) {
+//
+//                }
+//            }
+//
+//        } else {
+//            break
+//        }
+//    }
+//
+//    for i in 0..<arr.count {
+//        computeCombo(arr: Array(arr[(i+1)...]), tmp: tmp + [arr[i]])
+//    }
+//
+//}
 
 //computeCombo(arr: arr, tmp: [])
 loadData()
 
 // sort the libraries array
-let libs = libraries.sorted { $0.subscriptionLength > $1.subscriptionLength }
-
-libs.forEach {
-    print($0)
+let libs = libraries.sorted { $0.signupLength > $1.signupLength }
+var bookSet = Set<Int>()
+for i in 0..<libs.count {
+    //let powerOutput =
+    for j in 0..<libs.count {
+        if i == j { continue }
+        
+        
+    }
 }
 
-
-
+func calculateOutput(library: Library) -> Int {
+    let activeDays = globalData!.totalDays - library.signupLength
+    let processingPower = activeDays * library.maxBookProcess
+//    if processingPower > library.books.count {
+//        return library.books.reduce(0, { (result, book) in
+//            var res = 0
+//            if !bookSet.contains(book.id) {
+//                let res = result + book.value
+//                bookSet.insert(book.id)
+//                return res
+//            }
+//            return result
+//        })
+//    } else {
+//        var result = 0
+//        library.books.
+//    }
+    let count = min(processingPower, library.books.count)
+    var result = 0
+    for i in 0..<count {
+        if !bookSet.contains(library.books[i].id) {
+            result += library.books[i].value
+            bookSet.insert(library.books[i].id)
+        }
+    }
+    return result  
+}
